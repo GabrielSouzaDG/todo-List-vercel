@@ -1,17 +1,12 @@
 const { Pool } = require('pg');
 
-// Pool mantém um conjunto de conexões abertas com o PostgreSQL,
-// reutilizando-as nas requisições em vez de abrir/fechar a cada chamada.
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  // ssl é exigido pela Railway e pela maioria dos provedores cloud.
   ssl: process.env.NODE_ENV === 'production'
     ? { rejectUnauthorized: false }
     : false,
 });
 
-// Cria a tabela caso ela ainda não exista.
-// Isso elimina a necessidade de rodar migrations manualmente no primeiro deploy.
 const initDb = async () => {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS tasks (

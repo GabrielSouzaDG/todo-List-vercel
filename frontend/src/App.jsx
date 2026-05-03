@@ -6,27 +6,24 @@ import Toast      from './components/Toast';
 import './styles/global.css';
 
 export default function App() {
-  // ── Estado principal ────────────────────────────────────────────────────────
   const [tasks,   setTasks]   = useState([]);
-  const [loading, setLoading] = useState(false);   // carregando lista
-  const [saving,  setSaving]  = useState(false);   // salvando tarefa
-  const [modal,   setModal]   = useState(null);    // null | 'new' | objeto tarefa
+  const [loading, setLoading] = useState(false);  
+  const [saving,  setSaving]  = useState(false);  
+  const [modal,   setModal]   = useState(null);    
   const [search,  setSearch]  = useState('');
   const [filter,  setFilter]  = useState('Todas');
-  const [toast,   setToast]   = useState(null);    // { message, type }
-
+  const [toast,   setToast]   = useState(null);    
   // Ref para o timeout do debounce da pesquisa
   const searchTimeout = useRef(null);
 
   // ── Feedback visual ─────────────────────────────────────────────────────────
-  // Exibe um toast e o remove automaticamente após 2.8s.
   const showToast = useCallback((message, type = 'success') => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 2800);
   }, []);
 
   // ── Busca de tarefas ────────────────────────────────────────────────────────
-  // Usa debounce no campo de pesquisa para não disparar uma request a cada tecla.
+  // Usa debounce no campo de pesquisa para nao disparar uma request a cada tecla.
   const fetchTasks = useCallback(async (searchValue, filterValue) => {
     setLoading(true);
     try {
@@ -42,12 +39,11 @@ export default function App() {
     }
   }, [showToast]);
 
-  // Busca inicial ao montar o componente
   useEffect(() => {
     fetchTasks('', 'Todas');
   }, [fetchTasks]);
 
-  // Debounce: espera 350ms após o usuário parar de digitar antes de buscar
+  // Debounce: espera 350ms
   function handleSearchChange(value) {
     setSearch(value);
     clearTimeout(searchTimeout.current);
@@ -105,7 +101,6 @@ export default function App() {
     }
   }
 
-  // ── Contadores para o header ─────────────────────────────────────────────────
   const pending = tasks.filter(t => t.status === 'Pendente').length;
 
   // ── Render ───────────────────────────────────────────────────────────────────

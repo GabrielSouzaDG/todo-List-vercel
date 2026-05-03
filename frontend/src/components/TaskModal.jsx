@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 const EMPTY = { title: '', description: '', due_date: '', status: 'Pendente' };
 
-// Valida os campos e retorna um objeto de erros.
 // Espelha as validações do backend para feedback imediato sem round-trip.
 function validate({ title, due_date }) {
   const errors = {};
@@ -16,13 +15,12 @@ function validate({ title, due_date }) {
 }
 
 export default function TaskModal({ task, onSave, onClose, loading }) {
-  // Se `task` foi passado, estamos editando; caso contrário, criando.
   const [form, setForm]   = useState(task ? { ...task } : { ...EMPTY });
   const [errors, setErrors] = useState({});
 
   function set(field, value) {
     setForm(f => ({ ...f, [field]: value }));
-    setErrors(e => ({ ...e, [field]: undefined })); // limpa o erro do campo ao editar
+    setErrors(e => ({ ...e, [field]: undefined }));
   }
 
   function handleSubmit() {

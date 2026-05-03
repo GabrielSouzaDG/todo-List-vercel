@@ -3,9 +3,6 @@ const router  = express.Router();
 const { pool } = require('../db/database');
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
-
-// Valida os campos de entrada e retorna um array de erros.
-// Centralizar a validação aqui garante consistência entre POST e PUT.
 function validateTask({ title, due_date, status }) {
   const errors = [];
 
@@ -27,19 +24,16 @@ function validateTask({ title, due_date, status }) {
 }
 
 // ── GET /api/tasks ────────────────────────────────────────────────────────────
-// Suporta os query params: ?search=texto&status=Pendente
 router.get('/', async (req, res, next) => {
   try {
     const { search, status } = req.query;
 
     // Construção dinâmica da query usando parâmetros numerados ($1, $2…)
-    // para evitar SQL Injection — nunca interpole variáveis diretamente na string.
     const conditions = [];
     const params     = [];
 
     if (search) {
       params.push(`%${search}%`);
-      // ILIKE = LIKE case-insensitive no PostgreSQL
       conditions.push(`(title ILIKE $${params.length} OR description ILIKE $${params.length})`);
     }
 

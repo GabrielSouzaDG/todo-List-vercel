@@ -7,7 +7,6 @@ function formatDate(iso) {
 
 function isOverdue(dateStr, status) {
   if (!dateStr || status === 'Concluída') return false;
-  // Compara só a data, sem horário, para evitar problema de fuso.
   return new Date(dateStr.split('T')[0] + 'T00:00:00') < new Date(new Date().toDateString());
 }
 

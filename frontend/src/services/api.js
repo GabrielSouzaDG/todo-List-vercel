@@ -1,8 +1,3 @@
-// Camada de serviço: centraliza todas as chamadas HTTP à API.
-// Os componentes React nunca fazem fetch() diretamente — eles chamam
-// funções daqui. Isso facilita trocar a URL base ou adicionar autenticação
-// num único lugar no futuro.
-
 const BASE_URL = import.meta.env.VITE_API_URL
   ? `${import.meta.env.VITE_API_URL}/api/tasks`
   : '/api/tasks'; // em desenvolvimento, o proxy do Vite resolve
@@ -20,7 +15,7 @@ async function request(url, options = {}) {
     throw new Error(message);
   }
 
-  // DELETE retorna 204 No Content — não há JSON para parsear.
+  // DELETE retorna 204 No Content quando nao tem JSON para parsear.
   if (res.status === 204) return null;
   return res.json();
 }
